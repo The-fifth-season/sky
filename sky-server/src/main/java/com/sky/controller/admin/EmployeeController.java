@@ -1,6 +1,6 @@
 package com.sky.controller.admin;
-
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -8,6 +8,7 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import com.sky.vo.EmployeeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -75,6 +76,13 @@ public class EmployeeController {
     @Operation(summary = "退出")
     public Result<String> logout() {
         return Result.success();
+    }
+
+    @PostMapping
+    @ApiOperation("增加员工")
+    public Result<EmployeeVO> save(@RequestBody EmployeeDTO employeeDTO){
+        EmployeeVO employeeVO = employeeService.save(employeeDTO);
+        return Result.success(employeeVO);
     }
 
 

@@ -1,9 +1,9 @@
 package com.sky.service;
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
+import com.sky.vo.EmployeeVO;
 
 public interface EmployeeService extends IService<Employee> {
 
@@ -14,4 +14,5 @@ public interface EmployeeService extends IService<Employee> {
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
+    EmployeeVO save(EmployeeDTO employeeDTO);
 }
