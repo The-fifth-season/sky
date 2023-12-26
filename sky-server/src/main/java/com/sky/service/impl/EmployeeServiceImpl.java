@@ -18,7 +18,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 
