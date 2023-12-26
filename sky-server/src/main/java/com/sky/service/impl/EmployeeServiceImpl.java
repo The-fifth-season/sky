@@ -74,6 +74,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setPassword(DigestUtils.md5Hex(PasswordConstant.DEFAULT_PASSWORD));
+        //TODO 通过令牌获取ID
         employee.setCreateUser(10L);
         employee.setUpdateUser(10L);
         employeeMapper.insert(employee);
