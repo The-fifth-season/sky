@@ -13,13 +13,10 @@ import com.sky.mapper.EmployeeMapper;
 import com.sky.service.EmployeeService;
 import com.sky.vo.EmployeeVO;
 import io.swagger.annotations.ApiOperation;
-import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 
 @Service
@@ -63,17 +60,17 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return employee;
     }
 
-    @SneakyThrows           //用于处理异常，不用一层层的往上抛
+//    @SneakyThrows           //用于处理异常，不用一层层的往上抛
     @Override
     @ApiOperation("新增员工2")
     public EmployeeVO save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO,employee);                         /*
         boolean exists = lambdaQuery().eq(Employee::getName, employeeDTO.getName()).exists();                   //判断数据库中，有没有重复的用户名存在
         System.out.println(exists);
         if (exists){
             throw new SQLIntegrityConstraintViolationException("用户"+employeeDTO.getName()+"已存在");           //用了@SneakyThrows注解后，就不需要catch异常再抛RuntimeException了
-        }
+        }*/
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setPassword(DigestUtils.md5Hex(PasswordConstant.DEFAULT_PASSWORD));
