@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public Result exceptionHandler(SQLIntegrityConstraintViolationException ex){            //捕获数据库报错异常
         String message = ex.getMessage();               //获取错误信息
         String msg;
-        //例如：Duplicate entry 'yjl' for key 'employee.idx_username（数据库中yjl用户名（不允许重复）已经存在）
+        //错误信息示例：Duplicate entry 'yjl' for key 'employee.idx_username（数据库中yjl用户名（不允许重复）已经存在）
         if (message.contains("Duplicate entry")) {
             String s = message.split(" ")[2];
             String s1 = s.replaceAll("'", "");
@@ -39,5 +39,4 @@ public class GlobalExceptionHandler {
         }
         return Result.error(msg);
     }
-
 }
