@@ -1,8 +1,12 @@
 package com.sky.controller.admin;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
+import com.sky.entity.PageResult;
 import com.sky.properties.JwtProperties;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
@@ -14,12 +18,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,12 +37,10 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final JwtProperties jwtProperties;
-
     /**
-     * 登录
-     *
+     * 登陆功能
      * @param employeeLoginDTO
-     * @return
+     * @return EmployeeLoginVO
      */
     @ApiOperation("登陆")
     @PostMapping("/login")
@@ -66,11 +66,10 @@ public class EmployeeController {
 
         return Result.success(employeeLoginVO);
     }
-
     /**
-     * 退出
+     * 退出功能
      *
-     * @return
+     * @return  无
      */
     @PostMapping("/logout") 
     @Operation(summary = "退出")
@@ -83,5 +82,39 @@ public class EmployeeController {
     public Result<EmployeeVO> save(@RequestBody EmployeeDTO employeeDTO){
         EmployeeVO employeeVO = employeeService.save(employeeDTO);
         return Result.success(employeeVO);
+    }
+
+    @GetMapping("/page")
+    @ApiOperation("员工分页查询")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
+        log.info("员工分页查询。参数为：{}",employeePageQueryDTO);
+        Page<Employee> page1 = employeeService.pageQuery(employeePageQueryDTO);
+        List<Employee> records =  page1.getRecords();
+        records.forEach(System.out::println);
+        int size = records.size();
+        PageResult pageResult = new PageResult(size, records);
+        return Result.success(pageResult);
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("更改员工状态")
+    public Result<String> status(@PathVariable String status , String id){
+        employeeService.status(status,id);
+        return Result.success();
+    }
+
+    @PutMapping
+    @ApiOperation("修改员工信息")
+    public Result<Employee> modify(@RequestBody EmployeeDTO employeeDTO){
+        Employee employee = employeeService.modify(employeeDTO);
+        return Result.success(employee);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> query(@PathVariable Long id){
+        Employee byId = employeeService.getById(id);
+        byId.setPassword("*********");
+        return Result.success(byId);
     }
 }

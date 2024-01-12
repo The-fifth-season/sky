@@ -2,11 +2,14 @@ package com.sky.dto;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
 public class EmployeePageQueryDTO implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 7120430351093859152L;
     //员工姓名
     private String name;
 

@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -19,8 +18,6 @@ import java.time.LocalDateTime;
 @TableName("employee")
 public class Employee implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id" , type = IdType.AUTO)
     private Long id;
