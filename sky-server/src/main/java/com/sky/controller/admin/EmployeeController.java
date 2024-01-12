@@ -37,12 +37,10 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final JwtProperties jwtProperties;
-
     /**
-     * 登录
-     *
+     * 登陆功能
      * @param employeeLoginDTO
-     * @return
+     * @return EmployeeLoginVO
      */
     @ApiOperation("登陆")
     @PostMapping("/login")
@@ -68,11 +66,10 @@ public class EmployeeController {
 
         return Result.success(employeeLoginVO);
     }
-
     /**
-     * 退出
+     * 退出功能
      *
-     * @return
+     * @return  无
      */
     @PostMapping("/logout") 
     @Operation(summary = "退出")
@@ -92,10 +89,32 @@ public class EmployeeController {
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
         log.info("员工分页查询。参数为：{}",employeePageQueryDTO);
         Page<Employee> page1 = employeeService.pageQuery(employeePageQueryDTO);
-        List<Employee> records = page1.getRecords();
+        List<Employee> records =  page1.getRecords();
         records.forEach(System.out::println);
         int size = records.size();
         PageResult pageResult = new PageResult(size, records);
         return Result.success(pageResult);
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("更改员工状态")
+    public Result<String> status(@PathVariable String status , String id){
+        employeeService.status(status,id);
+        return Result.success();
+    }
+
+    @PutMapping
+    @ApiOperation("修改员工信息")
+    public Result<Employee> modify(@RequestBody EmployeeDTO employeeDTO){
+        Employee employee = employeeService.modify(employeeDTO);
+        return Result.success(employee);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> query(@PathVariable Long id){
+        Employee byId = employeeService.getById(id);
+        byId.setPassword("*********");
+        return Result.success(byId);
     }
 }

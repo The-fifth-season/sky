@@ -2,7 +2,6 @@ package com.sky.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.MessageConstant;
-import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -12,21 +11,28 @@ import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.vo.EmployeeVO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
+
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
     /**
      * 员工登录
      *
@@ -63,12 +69,12 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return employee;
     }
 
-//    @SneakyThrows           //用于处理异常，不用一层层的往上抛
+    //    @SneakyThrows           //用于处理异常，不用一层层的往上抛
     @Override
     @ApiOperation("新增员工2")
     public EmployeeVO save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDTO,employee);                         /*
+        BeanUtils.copyProperties(employeeDTO, employee);                         /*
         boolean exists = lambdaQuery().eq(Employee::getName, employeeDTO.getName()).exists();                   //判断数据库中，有没有重复的用户名存在
         System.out.println(exists);
         if (exists){
@@ -76,13 +82,13 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }*/
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
-        employee.setPassword(DigestUtils.md5Hex(PasswordConstant.DEFAULT_PASSWORD));
+//        employee.setPassword(DigestUtils.md5Hex(PasswordConstant.DEFAULT_PASSWORD));
         //TODO 通过令牌获取ID
         employee.setCreateUser(10L);
         employee.setUpdateUser(10L);
         employeeMapper.insert(employee);
         EmployeeVO employeeVO = new EmployeeVO();
-        BeanUtils.copyProperties(employee,employeeVO);
+        BeanUtils.copyProperties(employee, employeeVO);
         return employeeVO;
     }
 
@@ -96,7 +102,45 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         String name = employeePageQueryDTO.getName();
 
         return lambdaQuery().like(name != null, Employee::getName, name)
-                .orderByDesc(Employee::getCreateTime)
+                //.orderByDesc(Employee::getCreateTime)             //创建时间倒序排序
                 .page(page);
+    }
+
+    /**
+     * 更改用户状态
+     *
+     * @param status
+     * @param id
+     * @return
+     */
+    @Override
+    public Result<String> status(String status, String id) {
+        Employee employee = employeeMapper.selectById(id);
+        Integer status2 = Integer.parseInt(status);
+        /*switch (status2) {
+            case 0:
+                status2 = StatusConstant.DISABLE;
+                break;
+            case 1:
+                status2 = StatusConstant.ENABLE;
+                break;
+            default:
+               return Result.error("账号状态错误");
+        }*/
+        employee.setStatus(status2);
+        employee.setUpdateTime(LocalDateTime.now());
+        employeeMapper.updateById(employee);
+        return Result.success();
+    }
+
+    @Override
+    public Employee modify(@RequestParam EmployeeDTO employeeDTO) {
+        Employee employee = employeeMapper.selectById(employeeDTO.getId());
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        log.info("修改后员工的详细信息{}",employee);
+        employeeMapper.updateById(employee);
+        employee.setPassword("你猜猜看");
+        return employee;
     }
 }
