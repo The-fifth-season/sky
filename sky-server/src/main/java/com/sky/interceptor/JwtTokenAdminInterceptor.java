@@ -25,11 +25,11 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
     /**
      * 校验jwt
      *
-     * @param request
-     * @param response
-     * @param handler
-     * @return
-     * @throws Exception
+     * @param request 前端请求
+     * @param response 返回前端数据
+     * @param handler 处理
+     * @return 返回结果是否通过
+     * @throws Exception 抛异常
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //判断当前拦截到的是Controller的方法还是其他资源

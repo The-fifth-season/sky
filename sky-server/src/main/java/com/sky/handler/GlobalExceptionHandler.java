@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     /**
      * 捕获业务异常
      * @param ex
-     * @return
+     * @return 错误信息
      */
     @ExceptionHandler
     public Result exceptionHandler(BaseException ex){
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         return Result.error(ex.getMessage());
     }
     @ExceptionHandler
-    public Result exceptionHandler(SQLIntegrityConstraintViolationException ex){            //捕获数据库报错异常
+    public Result<String> exceptionHandler(SQLIntegrityConstraintViolationException ex){            //捕获数据库报错异常
         String message = ex.getMessage();               //获取错误信息
         String msg;
         //错误信息示例：Duplicate entry 'yjl' for key 'employee.idx_username（数据库中yjl用户名（不允许重复）已经存在）

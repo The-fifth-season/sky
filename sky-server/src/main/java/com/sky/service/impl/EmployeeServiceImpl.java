@@ -1,4 +1,5 @@
 package com.sky.service.impl;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.MessageConstant;
@@ -35,7 +36,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     /**
      * 员工登录
-     *
      * @param employeeLoginDTO
      * @return
      */
@@ -96,10 +96,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     @Operation(summary = "分页查询")
     public Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
-        Page<Employee> page = Page.of(employeePageQueryDTO.getPage(),
-                employeePageQueryDTO.getPageSize(),
-                employeeMapper.selectCount(null));
         String name = employeePageQueryDTO.getName();
+        Page<Employee> page = Page.of(employeePageQueryDTO.getPage(),
+                employeePageQueryDTO.getPageSize());
 
         return lambdaQuery().like(name != null, Employee::getName, name)
                 //.orderByDesc(Employee::getCreateTime)             //创建时间倒序排序
@@ -111,7 +110,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
      *
      * @param status
      * @param id
-     * @return
+     * @return 无
      */
     @Override
     public Result<String> status(String status, String id) {
@@ -136,9 +135,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public Employee modify(@RequestParam EmployeeDTO employeeDTO) {
         Employee employee = employeeMapper.selectById(employeeDTO.getId());
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO, employee);
         employee.setUpdateTime(LocalDateTime.now());
-        log.info("修改后员工的详细信息{}",employee);
+        log.info("修改后员工的详细信息{}", employee);
         employeeMapper.updateById(employee);
         employee.setPassword("你猜猜看");
         return employee;

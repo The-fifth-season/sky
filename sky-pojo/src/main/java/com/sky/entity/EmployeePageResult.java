@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageResult implements Serializable {
+public class EmployeePageResult implements Serializable {
     @Serial
     private static final long serialVersionUID = 8888942523003174299L;
     private long total;

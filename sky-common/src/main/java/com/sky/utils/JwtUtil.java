@@ -35,23 +35,23 @@ public class JwtUtil {
                 // 设置过期时间
                 .setExpiration(exp);
 
-        return builder.compact();
+        return builder.compact();       //.compact(),返回一个jwt类型的对象
     }
 
     /**
      * Token解密
      *
      * @param secretKey jwt秘钥 此秘钥一定要保留好在服务端, 不能暴露出去, 否则sign就可以被伪造, 如果对接多个客户端建议改造成多个
-     * @param token     加密后的token
+     * @param token2     加密后的token
      * @return
      */
-    public static Claims parseJWT(String secretKey, String token) {
+    public static Claims parseJWT(String secretKey, String token2) {
         // 得到DefaultJwtParser
         Claims claims = Jwts.parser()
                 // 设置签名的秘钥
                 .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 // 设置需要解析的jwt
-                .parseClaimsJws(token).getBody();
+                .parseClaimsJws(token2).getBody();
         return claims;
     }
 

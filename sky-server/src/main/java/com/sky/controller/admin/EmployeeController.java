@@ -1,12 +1,11 @@
 package com.sky.controller.admin;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
-import com.sky.entity.PageResult;
+import com.sky.entity.EmployeePageResult;
 import com.sky.properties.JwtProperties;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
@@ -19,11 +18,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * 员工管理
  */
@@ -32,7 +29,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 //@Tag(name = "员工相关接口")
-@Api(tags = "员工相关接口1")
+@Api(tags = "员工相关接口")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -68,7 +65,6 @@ public class EmployeeController {
     }
     /**
      * 退出功能
-     *
      * @return  无
      */
     @PostMapping("/logout") 
@@ -86,14 +82,21 @@ public class EmployeeController {
 
     @GetMapping("/page")
     @ApiOperation("员工分页查询")
-    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
+    public Result<EmployeePageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
         log.info("员工分页查询。参数为：{}",employeePageQueryDTO);
         Page<Employee> page1 = employeeService.pageQuery(employeePageQueryDTO);
         List<Employee> records =  page1.getRecords();
+        //向前端传送密码时，加密，确保安全性
+        for (Employee record : records) {
+            record.setPassword("密码******");
+        }
+        //records.forEach(record->record.setPassword(""));
         records.forEach(System.out::println);
-        int size = records.size();
-        PageResult pageResult = new PageResult(size, records);
-        return Result.success(pageResult);
+        long pages = page1.getPages();                  //查询的数据的页数
+        System.out.println(pages);
+        int size = records.size();                      //查询的数据的每页数量
+        EmployeePageResult employeePageResult = new EmployeePageResult(size, records);
+        return Result.success(employeePageResult);
     }
 
     @PostMapping("/status/{status}")
@@ -110,6 +113,11 @@ public class EmployeeController {
         return Result.success(employee);
     }
 
+    /**
+     *根据id查询员工信息
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @ApiOperation("根据id查询员工信息")
     public Result<Employee> query(@PathVariable Long id){
@@ -117,4 +125,6 @@ public class EmployeeController {
         byId.setPassword("*********");
         return Result.success(byId);
     }
+
+
 }
