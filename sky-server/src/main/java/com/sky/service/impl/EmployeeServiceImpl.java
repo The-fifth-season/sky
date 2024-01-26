@@ -2,7 +2,9 @@ package com.sky.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sky.aop.Aspect1;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -24,8 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-
 @Service
 @Slf4j
 
@@ -39,7 +39,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
      * @param employeeLoginDTO
      * @return
      */
+    @ApiOperation("登陆")
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
+        String s2 = Aspect1.getString();
+        System.out.println("s2的值为============"+s2);
+
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
 
@@ -74,18 +78,25 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @ApiOperation("新增员工2")
     public EmployeeVO save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
+        //hu-tool 包的方法，用于拷贝信息
         BeanUtils.copyProperties(employeeDTO, employee);                         /*
         boolean exists = lambdaQuery().eq(Employee::getName, employeeDTO.getName()).exists();                   //判断数据库中，有没有重复的用户名存在
         System.out.println(exists);
         if (exists){
             throw new SQLIntegrityConstraintViolationException("用户"+employeeDTO.getName()+"已存在");           //用了@SneakyThrows注解后，就不需要catch异常再抛RuntimeException了
         }*/
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-//        employee.setPassword(DigestUtils.md5Hex(PasswordConstant.DEFAULT_PASSWORD));
-        //TODO 通过令牌获取ID
-        employee.setCreateUser(10L);
-        employee.setUpdateUser(10L);
+        //employee.setCreateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
+        employee.setPassword(PasswordConstant.DEFAULT_PASSWORD);
+        //通过令牌获取ID,线程栈，传递ID的值
+
+        /* System.out.println("当前线程4:::"+Thread.currentThread().getId());           公共字段自动填充了，所以可以省略
+        Long l = BaseContext.threadLocal.get();
+        log.info("当前id：：：：：：：：{}",l);
+        Long currentId = BaseContext.getCurrentId();
+        log.info("当前id：：：：：：：：{}",currentId);*/
+        //employee.setCreateUser(l);
+        //employee.setUpdateUser(l);
         employeeMapper.insert(employee);
         EmployeeVO employeeVO = new EmployeeVO();
         BeanUtils.copyProperties(employee, employeeVO);
@@ -107,7 +118,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     /**
      * 更改用户状态
-     *
      * @param status
      * @param id
      * @return 无
@@ -127,7 +137,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
                return Result.error("账号状态错误");
         }*/
         employee.setStatus(status2);
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.updateById(employee);
         return Result.success();
     }
@@ -136,10 +146,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     public Employee modify(@RequestParam EmployeeDTO employeeDTO) {
         Employee employee = employeeMapper.selectById(employeeDTO.getId());
         BeanUtils.copyProperties(employeeDTO, employee);
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
         log.info("修改后员工的详细信息{}", employee);
-        employeeMapper.updateById(employee);
+        //employeeMapper.updateById(employee);
         employee.setPassword("你猜猜看");
+        employeeMapper.updateById(employee);
         return employee;
     }
 }

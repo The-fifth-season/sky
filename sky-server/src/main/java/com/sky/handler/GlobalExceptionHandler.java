@@ -11,7 +11,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 /**
  * 全局异常处理器，处理项目中抛出的业务异常
  */
-@RestControllerAdvice
+@RestControllerAdvice           //全局处理异常的注解，用于处理Restful接口抛出的异常，以json格式返回错误信息
 @Slf4j
 public class GlobalExceptionHandler {
 

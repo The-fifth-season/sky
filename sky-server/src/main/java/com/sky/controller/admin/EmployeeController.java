@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sky.aop.Aspect1;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -42,6 +43,8 @@ public class EmployeeController {
     @ApiOperation("登陆")
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
+        String s1 = "你好";
+        Aspect1.setString(s1);
         log.info("员工登录：{}", employeeLoginDTO);
 
         Employee employee = employeeService.login(employeeLoginDTO);
@@ -58,7 +61,7 @@ public class EmployeeController {
                 .id(employee.getId())
                 .userName(employee.getUsername())
                 .name(employee.getName())
-                .token(token)
+                .token(token)                   //校验成功为前端返回token值
                 .build();
 
         return Result.success(employeeLoginVO);
@@ -67,7 +70,7 @@ public class EmployeeController {
      * 退出功能
      * @return  无
      */
-    @PostMapping("/logout") 
+    @PostMapping("/logout")
     @Operation(summary = "退出")
     public Result<String> logout() {
         return Result.success();
@@ -76,10 +79,10 @@ public class EmployeeController {
     @PostMapping
     @ApiOperation("增加员工")
     public Result<EmployeeVO> save(@RequestBody EmployeeDTO employeeDTO){
+        System.out.println("当前线程3:::"+Thread.currentThread().getId());
         EmployeeVO employeeVO = employeeService.save(employeeDTO);
         return Result.success(employeeVO);
     }
-
     @GetMapping("/page")
     @ApiOperation("员工分页查询")
     public Result<EmployeePageResult> page(EmployeePageQueryDTO employeePageQueryDTO){

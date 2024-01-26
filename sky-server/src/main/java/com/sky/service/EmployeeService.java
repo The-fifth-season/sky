@@ -1,4 +1,5 @@
 package com.sky.service;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.dto.EmployeeDTO;
@@ -24,4 +25,5 @@ public interface EmployeeService extends IService<Employee> {
     Result<String> status(String status, String id);
 
     Employee modify(EmployeeDTO employeeDTO);
+
 }

@@ -30,15 +30,16 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
     /**
-     * 注册自定义拦截器
-     *
-     * @param registry
+     * 注册自定义拦截器 addInterceptors方法是 WebMvcConfigurationSupport中重写的方法
+     * 输入addI即可出现提示
+     * @param registry 添加具体的拦截器，设置拦截的路径（这里添加的拦截器是用于校验jwt令牌）
      */
+
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
-        registry.addInterceptor(jwtTokenAdminInterceptor)
+        registry.addInterceptor(jwtTokenAdminInterceptor)     //jwtTokenAdminInterceptor必须是实现了拦截器handleInterceptor接口
                 .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/employee/login");
+                .excludePathPatterns("/admin/employee/login");   //登陆接口不做拦截，没有令牌也可以进行登陆操作，从而通过登陆获取令牌
     }
 
     /**

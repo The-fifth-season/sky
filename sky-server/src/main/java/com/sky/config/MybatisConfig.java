@@ -14,7 +14,7 @@ public class MybatisConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         PaginationInnerInterceptor pageInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
-        pageInterceptor.setMaxLimit(1000L);                 //设置参数，每页最大限额为1000个数据
+        pageInterceptor.setMaxLimit(1000L);                     //设置参数，每页最大限额为1000个数据
         interceptor.addInnerInterceptor(pageInterceptor);
         return interceptor;
     }

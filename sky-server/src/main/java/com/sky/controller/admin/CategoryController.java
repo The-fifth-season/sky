@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.CategoryPageResult;
@@ -71,7 +72,8 @@ public class CategoryController {
 
     @PostMapping
     @ApiOperation("新增分类")
-    public Result<String> add(){
-        return null;
+    public Result<String> save(@RequestBody CategoryDTO categoryDto){
+        categoryService.insert(categoryDto);
+        return Result.success();
     }
 }
