@@ -88,6 +88,7 @@ public class EmployeeController {
     public Result<EmployeePageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
         log.info("员工分页查询。参数为：{}",employeePageQueryDTO);
         Page<Employee> page1 = employeeService.pageQuery(employeePageQueryDTO);
+        long total = page1.getTotal();                  //按要求筛选后的分页数据总数
         List<Employee> records =  page1.getRecords();
         //向前端传送密码时，加密，确保安全性
         for (Employee record : records) {
@@ -95,10 +96,10 @@ public class EmployeeController {
         }
         //records.forEach(record->record.setPassword(""));
         records.forEach(System.out::println);
-        long pages = page1.getPages();                  //查询的数据的页数
+        long pages = page1.getPages();                  //查询的数据的页数————多少页
         System.out.println(pages);
         int size = records.size();                      //查询的数据的每页数量
-        EmployeePageResult employeePageResult = new EmployeePageResult(size, records);
+        EmployeePageResult employeePageResult = new EmployeePageResult(total, records);
         return Result.success(employeePageResult);
     }
 

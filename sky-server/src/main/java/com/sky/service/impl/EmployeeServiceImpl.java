@@ -88,8 +88,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         //employee.setCreateTime(LocalDateTime.now());
         //employee.setUpdateTime(LocalDateTime.now());
         employee.setPassword(PasswordConstant.DEFAULT_PASSWORD);
-
         //通过令牌获取ID,线程栈，传递ID的值
+
         /* System.out.println("当前线程4:::"+Thread.currentThread().getId());           公共字段自动填充了，所以可以省略
         Long l = BaseContext.threadLocal.get();
         log.info("当前id：：：：：：：：{}",l);
@@ -97,7 +97,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         log.info("当前id：：：：：：：：{}",currentId);*/
         //employee.setCreateUser(l);
         //employee.setUpdateUser(l);
-        
         employeeMapper.insert(employee);
         EmployeeVO employeeVO = new EmployeeVO();
         BeanUtils.copyProperties(employee, employeeVO);
@@ -140,7 +139,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         employee.setStatus(status2);
         //employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.updateById(employee);
-        System.out.println("差异");
         return Result.success();
     }
 

@@ -7,6 +7,8 @@ import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.Result;
 
+import java.util.List;
+
 /**
  * <p>
  * 菜品及套餐分类 服务类
@@ -19,4 +21,6 @@ public interface ICategoryService extends IService<Category> {
     Page<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
     Result<String> insert(CategoryDTO categoryDto);
+
+    List<Category> queryByType(String type);
 }

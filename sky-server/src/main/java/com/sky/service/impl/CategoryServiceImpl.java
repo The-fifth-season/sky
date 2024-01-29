@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -59,5 +60,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
         categoryMapper.insert(category);
         return Result.success();
+    }
+
+    @Override
+    public List<Category> queryByType(String type) {
+        return  lambdaQuery()
+                .eq(type != null, Category::getType, type)
+                .list();
     }
 }

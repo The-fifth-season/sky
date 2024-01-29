@@ -9,6 +9,7 @@ import com.sky.result.Result;
 import com.sky.service.ICategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -36,10 +37,9 @@ public class CategoryController {
         Page<Category> page1 = categoryService.pageQuery(categoryPageQueryDTO);
         List<Category> records = page1.getRecords();
         int size = records.size();
-        long pages = page1.getPages();
-        long pages1 = page1.getPages();
-        System.out.println(pages+"============"+pages1);
-        CategoryPageResult categoryPageResult = new CategoryPageResult((long) size, records);
+        long pages = page1.getTotal();
+        System.out.println(pages+"============"+size);
+        CategoryPageResult categoryPageResult = new CategoryPageResult(pages, records);
 
         return Result.success(categoryPageResult);
     }
@@ -76,4 +76,22 @@ public class CategoryController {
         categoryService.insert(categoryDto);
         return Result.success();
     }
+
+    @GetMapping("/list")
+    @ApiOperation("根据类型查询分类")
+    public Result<List<Category>> queryByType(@RequestParam(required = false) String type){
+        List<Category> category = categoryService.queryByType(type);
+        return Result.success(category);
+    }
+
+    @PutMapping
+    public Result<String> updateById(@RequestBody CategoryDTO categoryDTO){
+        Category category = categoryService.getById(categoryDTO.getId());
+        BeanUtils.copyProperties(categoryDTO,category);
+        categoryService.saveOrUpdate(category);
+        return Result.success();
+    }
+
+
+
 }

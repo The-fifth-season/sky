@@ -1,4 +1,5 @@
 package com.sky.interceptor;
+
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.context.BaseContext;
 import com.sky.properties.JwtProperties;
@@ -12,7 +13,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
 
 /**
  * jwt令牌校验的拦截器
@@ -34,13 +34,13 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {       //�
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        System.out.println("当前线程1:::"+Thread.currentThread().getId());
-
+        /*System.out.println("当前线程1:::"+Thread.currentThread().getId());
+        //查看前端传送的请求中，请求头都有哪些内容
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){
             System.out.println(headerNames.nextElement());
         }
-
+*/
         //判断当前拦截到的是Controller的方法还是其他资源
         if (!(handler instanceof HandlerMethod)) {
             //当前拦截到的不是动态方法，直接放行

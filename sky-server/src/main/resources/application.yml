@@ -40,3 +40,8 @@ sky:
     user-secret-key: yjlKey2
     user-token-name: token
     user-ttl: 720000000
+  alioss:
+    access-key-id: ${sky.alioss.access-key-id}
+    access-key-secret: ${sky.alioss.access-key-secret}
+    endpoint: ${sky.alioss.endpoint}
+    bucket-name: ${sky.alioss.bucket-name}

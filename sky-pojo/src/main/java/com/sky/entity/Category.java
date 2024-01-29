@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Category implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.AUTO)
@@ -31,7 +34,7 @@ public class Category implements Serializable {
     //顺序
     private Integer sort;
 
-    //分类状态 0标识禁用 1表示启用
+    //分类状态 0表示禁用 1表示启用
     private Integer status;
 
     //创建时间
