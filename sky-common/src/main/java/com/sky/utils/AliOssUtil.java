@@ -14,7 +14,7 @@ import java.io.InputStream;
 @AllArgsConstructor
 @Slf4j
 public class AliOssUtil {
-
+    //通过新建AliOssConfiguration配置类，通过@Bean将AliOssProperties赋值给AliOssUtil
     private String endpoint;
     private String accessKeyId;
     private String accessKeySecret;

@@ -22,8 +22,9 @@ import java.util.UUID;
 @Api(tags = "通用接口")
 public class CommonController {
     @Autowired
-    private AliOssUtil aliOssUtil;
-
+    private AliOssUtil aliOssUtil;      //因为要用AliOssUtil中自定义的upload方法，所以不能直接注入AliOssProperties
+                                        //而是通过新建AliOssConfiguration配置类，通过@Bean将AliOssProperties赋值给AliOssUtil
+                                        //这样AliOssUtil中既有，环境配置中配好的参数值，又有upload方法可以执行
     @PostMapping("upload")
     @ApiOperation("上传文件接口")
     public Result<String> upload(@RequestBody MultipartFile file){

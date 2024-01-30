@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * jwt令牌校验的拦截器
+ * jwt令牌校验的拦截器，不拦截返回ture，拦截返回false
  */
 @Component
 @Slf4j
