@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.baomidou.mybatisplus.core.batch.MybatisBatch;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.dto.DishDTO;
@@ -43,7 +44,14 @@ public class DishFlavorServiceImpl extends ServiceImpl<DishFlavorMapper, DishFla
         List<DishFlavor> flavors = dishDTO.getFlavors();
         if (!flavors.isEmpty()) {
             flavors.forEach(dishFlavor -> dishFlavor.setDishId(id));
-            flavors.forEach(dishFlavorMapper::insert);
+
+            //数据批量插入
+            //TODO 优化成批量插入 (已完成)        mybatis-plus 3.5.4+ , mybatis 2.2.0 否则会冲突（试出来的）
+            //适用于，insert,update,delete操作，插入的为实体对象，具体查看mybatis-plus官网文档！！
+            MybatisBatch<DishFlavor> mybatisBatch = new MybatisBatch<>(getSqlSessionFactory(), flavors);
+            MybatisBatch.Method<DishFlavor> method = new MybatisBatch.Method<>(DishFlavorMapper.class);
+            mybatisBatch.execute(method.insert());
+            //flavors.forEach(dishFlavorMapper::insert);                  //逐条插入，低性能
         }
     }
 }

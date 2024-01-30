@@ -40,7 +40,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public Result<String> insert(CategoryDTO categoryDto) {
+    public void insert(CategoryDTO categoryDto) {
         /*Category category2 = Category.builder()
                 .updateTime(LocalDateTime.now())
                 .createTime(LocalDateTime.now())
@@ -59,7 +59,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         category.setUpdateUser(BaseContext.threadLocal.get());
 
         categoryMapper.insert(category);
-        return Result.success();
+        Result.success();
     }
 
     @Override

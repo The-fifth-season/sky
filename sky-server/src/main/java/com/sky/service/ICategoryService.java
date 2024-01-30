@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
-import com.sky.result.Result;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public interface ICategoryService extends IService<Category> {
 
     Page<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
-    Result<String> insert(CategoryDTO categoryDto);
+    void insert(CategoryDTO categoryDto);
 
     List<Category> queryByType(String type);
 }
