@@ -1,5 +1,4 @@
 package com.sky.controller;
-
 import com.sky.result.Result;
 import com.sky.utils.AliOssUtil;
 import io.swagger.annotations.Api;
@@ -30,7 +29,7 @@ public class CommonController {
     public Result<String> upload(@RequestBody MultipartFile file){
         log.info("文件上传{}",file);
         try {
-            InputStream is = file.getInputStream();                   //直接用getInputStream转换为输入流
+            InputStream is = file.getInputStream();                   //直接用getInputStream转换为输入流（MultipartFile中封装的方法）
             String OriginalFilename = file.getOriginalFilename();
             String s = null;
             if (OriginalFilename != null) {

@@ -1,5 +1,4 @@
 package com.sky.controller.admin;
-
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -22,7 +21,6 @@ import java.util.List;
  * <p>
  * 菜品 前端控制器
  * </p>
- *
  * @author yjl
  * @since 2024-01-27
  */
@@ -31,11 +29,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Api(tags = "菜品相关接口")
 public class DishController {
+
     private final IDishService dishService;
     private final IDishFlavorService dishFlavorService;
 
     @PutMapping
     @ApiOperation("修改菜品")
+
     public Result<String> updateByIds(@RequestBody DishDTO dishDTO) {
         dishService.updateDishById(dishDTO);
         dishFlavorService.updateDishFlavor(dishDTO);
@@ -57,7 +57,6 @@ public class DishController {
         String[] split = ids.split(",");
         //List<Integer> list = Arrays.stream(split).map(Integer::parseInt).toList();
         dishService.removeByIds(Arrays.asList(split));
-
         return Result.success();
     }
 
@@ -88,9 +87,9 @@ public class DishController {
     }
 
     @GetMapping("list")
-    public Result<Dish> queryDish(Long id) {
-        Dish dish = dishService.getById(id);
-        return Result.success(dish);
+    public Result<List<Dish>> queryDish(String categoryId) {
+        List<Dish> list = dishService.lambdaQuery().eq(Dish::getCategoryId, categoryId).list();
+        return Result.success(list);
     }
 
     @PostMapping("/status/{status}")

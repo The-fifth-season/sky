@@ -32,6 +32,8 @@
         <poi>3.16</poi>
         <mybatis-plus>3.5.4.1</mybatis-plus>
         <aop>6.0.11</aop>
+        <spring.data.redis>3.2.0</spring.data.redis>
+        <commons.pool2>2.11.1</commons.pool2>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -65,7 +67,6 @@
                 <artifactId>commons-lang</artifactId>
                 <version>${commons.lang}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
@@ -146,6 +147,18 @@
                 <version>0.4.8</version>
             </dependency>
 
+            <!--spring-data-redis，操作redis-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring.data.redis}</version>
+            </dependency>
+            <!-- redis连接池依赖 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons.pool2}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

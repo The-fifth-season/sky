@@ -1,5 +1,4 @@
 package com.sky.service.impl;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.dto.DishDTO;
@@ -32,6 +31,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
         String name = dishPageQueryDTO.getName();
         Integer status = dishPageQueryDTO.getStatus();
         Integer categoryId = dishPageQueryDTO.getCategoryId();
+
         Page<Dish> page = Page.of(dishPageQueryDTO.getPage(),dishPageQueryDTO.getPageSize());
         //条件构造器，用于筛选。
         Page<Dish> page1 = lambdaQuery().like(name != null, Dish::getName, name)

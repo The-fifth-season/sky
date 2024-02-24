@@ -46,7 +46,6 @@ public class EmployeeController {
         String s1 = "你好";
         Aspect1.setString(s1);
         log.info("员工登录：{}", employeeLoginDTO);
-
         Employee employee = employeeService.login(employeeLoginDTO);
 
         //登录成功后，生成jwt令牌
@@ -63,7 +62,6 @@ public class EmployeeController {
                 .name(employee.getName())
                 .token(token)                   //校验成功为前端返回token值
                 .build();
-
         return Result.success(employeeLoginVO);
     }
     /**

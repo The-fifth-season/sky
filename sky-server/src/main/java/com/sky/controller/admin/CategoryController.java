@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
-import com.sky.entity.CategoryPageResult;
+import com.sky.entity.PageResult;
 import com.sky.result.Result;
 import com.sky.service.ICategoryService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -25,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/category")
 @RequiredArgsConstructor
+@Api(tags = "分类相关接口")
 public class CategoryController {
     private final ICategoryService categoryService;
     /**
@@ -33,15 +35,15 @@ public class CategoryController {
      * @return 菜品数据
      */
     @GetMapping("/page")
-    public Result<CategoryPageResult> page(CategoryPageQueryDTO categoryPageQueryDTO) {
+    public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO) {
         Page<Category> page1 = categoryService.pageQuery(categoryPageQueryDTO);
         List<Category> records = page1.getRecords();
         int size = records.size();
         long pages = page1.getTotal();
         System.out.println(pages+"============"+size);
-        CategoryPageResult categoryPageResult = new CategoryPageResult(pages, records);
+        PageResult pageResult = new PageResult(pages, records);
 
-        return Result.success(categoryPageResult);
+        return Result.success(pageResult);
     }
 
     /**

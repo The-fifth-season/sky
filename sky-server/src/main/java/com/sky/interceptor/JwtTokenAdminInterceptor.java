@@ -52,6 +52,9 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {       //�
 
         //2、校验令牌
         try {
+            //必须在拦截器这里通过令牌token中的Claims获取id，然后通过，线程栈储存，因为每次访问都会进行拦截，
+            // 需要不断通过令牌存储的信息，获取当前线程的用户ID——empID
+
             log.info("jwt校验:{}", token);
             //注意：：这里传入的密钥，要与JwtUtil.creatJWT中传入的一致，否则必定校验失败——————验证失败则直接报异常
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);    //claim 中包含了解析token后的信息
@@ -61,6 +64,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {       //�
 
             /*ThreadLocal<Long> threadLocal = BaseContext.threadLocal;
             threadLocal.set(empId);*/
+
             BaseContext.setCurrentId(empId);
 
             log.info("当前员工id：{}", empId);
