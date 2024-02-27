@@ -13,6 +13,7 @@ import com.sky.mapper.SetmealDishMapper;
 import com.sky.service.ISetMealService;
 import com.sky.vo.SetmealVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal> implements ISetMealService {
     private final SetMealMapper setMealMapper;
     private final SetmealDishMapper setmealDishMapper;
@@ -49,10 +51,12 @@ public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal> impl
     }
 
     @Override
-    public void insert(SetmealDTO setmealDTO) {
+    public Long insert(SetmealDTO setmealDTO) {
         SetMeal setMeal = new SetMeal();
         BeanUtils.copyProperties(setmealDTO,setMeal);
-        setMealMapper.insert(setMeal);
+        int insert = setMealMapper.insert(setMeal);
+        log.info("插入成功的返回值：{}",insert);
+        return setMeal.getId();
     }
 
     @Override
@@ -66,4 +70,10 @@ public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal> impl
         setmealVO.setSetmealDishes(setmealDishes);
         return setmealVO;
     }
+
+    @Override
+    public List<SetMeal> queryByCategoryId(Long categoryId) {
+        return lambdaQuery().eq(SetMeal::getCategoryId, categoryId).list();
+    }
+
 }

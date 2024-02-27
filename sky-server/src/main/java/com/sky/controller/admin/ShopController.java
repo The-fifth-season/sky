@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.result.Result;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/shop")
+@Api(tags = "店铺状态接口")
 public class ShopController {
 
     private final RedisTemplate redisTemplate;

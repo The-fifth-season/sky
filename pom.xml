@@ -34,6 +34,7 @@
         <aop>6.0.11</aop>
         <spring.data.redis>3.2.0</spring.data.redis>
         <commons.pool2>2.11.1</commons.pool2>
+        <spring.cache>3.2.0</spring.cache>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -42,7 +43,6 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.spring}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -158,6 +158,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons.pool2}</version>
+            </dependency>
+            <!--Spring Cache框架基于注解实现缓存-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-cache</artifactId>
+                <version>${spring.cache}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
