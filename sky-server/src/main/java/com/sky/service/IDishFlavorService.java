@@ -13,6 +13,5 @@ import com.sky.entity.DishFlavor;
  * @since 2024-01-30
  */
 public interface IDishFlavorService extends IService<DishFlavor> {
-
     void updateDishFlavor(DishDTO dishDTO);
 }
