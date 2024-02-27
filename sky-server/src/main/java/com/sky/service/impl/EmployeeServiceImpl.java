@@ -1,4 +1,5 @@
 package com.sky.service.impl;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.aop.Aspect1;
@@ -18,20 +19,19 @@ import com.sky.service.EmployeeService;
 import com.sky.vo.EmployeeVO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @Slf4j
-
+@RequiredArgsConstructor
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
 
-    @Autowired
-    private EmployeeMapper employeeMapper;
+    private final EmployeeMapper employeeMapper;
 
     /**
      * 员工登录
@@ -71,7 +71,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         //3、返回实体对象
         return employee;
     }
-
     //    @SneakyThrows           //用于处理异常，不用一层层的往上抛
     @Override
     @ApiOperation("新增员工2")

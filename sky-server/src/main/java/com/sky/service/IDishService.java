@@ -5,6 +5,9 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.result.PageResult;
+import com.sky.vo.DishVO;
+
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -19,4 +22,6 @@ public interface IDishService extends IService<Dish> {
     PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
     void updateDishById(DishDTO dishDTO);
+
+    ArrayList<DishVO> queryByCategory(Long categoryId);
 }

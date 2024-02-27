@@ -3,6 +3,9 @@ package com.sky.mapper;
 import com.sky.entity.DishFlavor;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DishFlavorMapper extends BaseMapper<DishFlavor> {
 
+    @Select("select * from dish_flavor where dish_id = ${id}")
+    List<DishFlavor> getByDishId(Long id);
 }

@@ -1,4 +1,5 @@
 package com.sky.service.impl;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -11,8 +12,8 @@ import com.sky.mapper.SetMealMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.service.ISetMealService;
 import com.sky.vo.SetmealVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +26,10 @@ import java.util.List;
  * @since 2024-01-27
  */
 @Service
+@RequiredArgsConstructor
 public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal> implements ISetMealService {
-    @Autowired
-    private SetMealMapper setMealMapper;
-    @Autowired
-    private SetmealDishMapper setmealDishMapper;
+    private final SetMealMapper setMealMapper;
+    private final SetmealDishMapper setmealDishMapper;
     @Override
     public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
 

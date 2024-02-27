@@ -27,6 +27,7 @@ public class CommonController {
     @PostMapping("upload")
     @ApiOperation("上传文件接口")
     public Result<String> upload(@RequestBody MultipartFile file){
+        String dir = "sky/" ;
         log.info("文件上传{}",file);
         try {
             InputStream is = file.getInputStream();                   //直接用getInputStream转换为输入流（MultipartFile中封装的方法）
@@ -35,7 +36,7 @@ public class CommonController {
             if (OriginalFilename != null) {
                 s = OriginalFilename.substring(OriginalFilename.lastIndexOf("."));          //substring(begin),从哪个位置还是截取，截取到末尾
             }                                                                                   //lastIndexOf("."),最后一个.的位置，返回值为int  s的值为文件的后缀.jpg。
-            String fileName = UUID.randomUUID().toString() + s;
+            String fileName =dir + UUID.randomUUID().toString() + s;
             String upload = aliOssUtil.upload(is, fileName);     //URL例：https://the-fifth-season.oss-cn-hangzhou.aliyuncs.com/A%7BZGOH5%5DZST%28Q%604G5%24YLOJI.png
             is.close();
             return Result.success(upload);      //返回OSS中存储的路径

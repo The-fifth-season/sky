@@ -6,6 +6,7 @@ import com.sky.service.ICategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,12 +27,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserCategoryController {
     private final ICategoryService categoryService;
+    private final RedisTemplate redisTemplate;
     @GetMapping("/list")
     @ApiOperation("根据类型查询分类")
     public Result<List<Category>> queryByType(@RequestParam(required = false) String type){
         List<Category> category = categoryService.queryByType(type);
         return Result.success(category);
     }
-
 
 }

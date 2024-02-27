@@ -1,4 +1,5 @@
 package com.sky.controller.admin;
+
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -12,10 +13,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -32,11 +34,12 @@ public class DishController {
 
     private final IDishService dishService;
     private final IDishFlavorService dishFlavorService;
+    private final RedisTemplate redisTemplate;
 
     @PutMapping
     @ApiOperation("修改菜品")
-
     public Result<String> updateByIds(@RequestBody DishDTO dishDTO) {
+        cleanCache("dish_*");
         dishService.updateDishById(dishDTO);
         dishFlavorService.updateDishFlavor(dishDTO);
         return Result.success();
@@ -53,16 +56,21 @@ public class DishController {
 
     @DeleteMapping
     @ApiOperation("批量删除")
-    public Result<String> deleteByIds(String ids) {
-        String[] split = ids.split(",");
+    public Result<String> deleteByIds(List<Long> ids) {
+        cleanCache("dish_*");
+        //String[] split = ids.split(",");              如果传入的是字符串，则可以这样拆解
         //List<Integer> list = Arrays.stream(split).map(Integer::parseInt).toList();
-        dishService.removeByIds(Arrays.asList(split));
+        //dishService.removeByIds(Arrays.asList(split));
+        dishService.removeByIds(ids);
         return Result.success();
     }
 
     @PostMapping
     @ApiOperation("菜品新增")
     public Result<String> insertById(@RequestBody DishDTO dishDTO) {
+        long categoryId = dishDTO.getCategoryId();
+        String key = "dish_"+categoryId;
+        cleanCache(key);
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO, dish);
         dishService.save(dish);
@@ -96,9 +104,19 @@ public class DishController {
     @ApiOperation("状态修改")
     public Result<String> updateStatus(@PathVariable String status, String id) {
         Dish dish = dishService.getById(id);
+        Long categoryId = dish.getCategoryId();
+        String key = "dish_"+categoryId;
+        cleanCache(key);
         dish.setStatus(Integer.parseInt(status));
         dishService.updateById(dish);
         return Result.success();
     }
 
+    //提取的清理缓存的方法
+    private void cleanCache(String patten){
+        Set keys = redisTemplate.keys(patten);
+        if (keys != null) {
+            redisTemplate.delete(keys);
+        }
+    }
 }
