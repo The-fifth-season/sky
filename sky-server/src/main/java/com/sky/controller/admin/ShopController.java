@@ -3,6 +3,8 @@ package com.sky.controller.admin;
 import com.sky.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +26,17 @@ public class ShopController {
 
     @GetMapping("status")
     @ApiOperation("获取店铺营业状态")
+    @Cacheable(cacheNames = "Shop_Status", key = "2")
     public Result<Integer> getStatus(){
-        Integer o = (Integer) redisTemplate.opsForValue().get(Key1);
-        return Result.success(o);
+        //Integer o = (Integer) redisTemplate.opsForValue().get(Key1);
+        return Result.success();
     }
 
     @PutMapping("/{status}")
     @ApiOperation("设置店铺营业状态")
+    @CachePut(cacheNames = "Shop_Status" , key = "2")
     public Result<Integer> putStatus(@PathVariable Integer status){
-         redisTemplate.opsForValue().set(Key1,status);
-        return Result.success();
+         //redisTemplate.opsForValue().set(Key1,status);
+        return Result.success(status);
     }
 }

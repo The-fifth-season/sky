@@ -9,6 +9,7 @@ import com.sky.mapper.DishFlavorMapper;
 import com.sky.service.IDishFlavorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
@@ -21,10 +22,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DishFlavorServiceImpl extends ServiceImpl<DishFlavorMapper, DishFlavor> implements IDishFlavorService {
-    private final DishFlavorMapper dishFlavorMapper;
 
+    private final DishFlavorMapper dishFlavorMapper;
     @Override
     public void updateDishFlavor(DishDTO dishDTO) {
+
         long id = dishDTO.getId();
         //用lambda的方法不行，delete里面得是条件构造器，这个不行
         //LambdaQueryChainWrapper<DishFlavor> eq1 = lambdaQuery().eq(DishFlavor::getDishId, id);

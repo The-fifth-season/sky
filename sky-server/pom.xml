@@ -153,6 +153,16 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xin.altitude.cms</groupId>
+            <artifactId>ucode-cms-bitmap</artifactId>
+            <version>1.6.4</version>
+        </dependency>
 
     </dependencies>
 

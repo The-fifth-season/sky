@@ -25,7 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements ICategoryService {
+public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>  implements ICategoryService{
     private final CategoryMapper categoryMapper;
     @Override
     public Page<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
