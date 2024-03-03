@@ -1,12 +1,18 @@
-package com.sky.utils;
+package com.sky.BloomFilter;
 
 import cn.hutool.bloomfilter.BitMapBloomFilter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
+@Component
 public class BloomFilterUtils {
+
+    private final BloomFilterInit bloomFilterInit ;
     private static final int EXPECTED_INSERTIONS = 1000;
     private static BitMapBloomFilter bloomFilter = new BitMapBloomFilter(EXPECTED_INSERTIONS);
 
@@ -30,8 +36,9 @@ public class BloomFilterUtils {
     }
 
     //布隆过滤器重新初始化
-    public static void reinitBloomFilter(Integer EXPECTED_INSERTIONS){
+    public void reinitBloomFilter(Integer EXPECTED_INSERTIONS){
         bloomFilter = new BitMapBloomFilter(EXPECTED_INSERTIONS);
+        //重新初始化
+        bloomFilterInit.run();
     }
-
 }

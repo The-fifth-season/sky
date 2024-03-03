@@ -1,12 +1,14 @@
 package com.sky.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sky.constant.BloomKeysConstant;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.PageResult;
 import com.sky.result.Result;
 import com.sky.service.ICategoryService;
+import com.sky.BloomFilter.BloomFilterUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +44,6 @@ public class CategoryController {
         long pages = page1.getTotal();
         System.out.println(pages+"============"+size);
         PageResult pageResult = new PageResult(pages, records);
-
         return Result.success(pageResult);
     }
 
@@ -89,11 +90,9 @@ public class CategoryController {
     @PutMapping
     public Result<String> updateById(@RequestBody CategoryDTO categoryDTO){
         Category category = categoryService.getById(categoryDTO.getId());
+        BloomFilterUtils.addToBloom(BloomKeysConstant.Category,category.getId());
         BeanUtils.copyProperties(categoryDTO,category);
         categoryService.saveOrUpdate(category);
         return Result.success();
     }
-
-
-
 }

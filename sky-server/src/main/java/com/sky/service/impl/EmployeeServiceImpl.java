@@ -1,8 +1,6 @@
 package com.sky.service.impl;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sky.aop.Aspect1;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
@@ -40,8 +38,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
      */
     @ApiOperation("登陆")
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
-        String s2 = Aspect1.getString();
-        System.out.println("s2的值为============"+s2);
 
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
@@ -86,8 +82,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         //employee.setCreateTime(LocalDateTime.now());
         //employee.setUpdateTime(LocalDateTime.now());
         employee.setPassword(PasswordConstant.DEFAULT_PASSWORD);
-        //通过令牌获取ID,线程栈，传递ID的值
 
+        //通过令牌获取ID,线程栈，传递ID的值
         /* System.out.println("当前线程4:::"+Thread.currentThread().getId());           公共字段自动填充了，所以可以省略
         Long l = BaseContext.threadLocal.get();
         log.info("当前id：：：：：：：：{}",l);

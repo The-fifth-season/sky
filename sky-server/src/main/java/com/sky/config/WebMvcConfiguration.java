@@ -1,8 +1,10 @@
 package com.sky.config;
+
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.interceptor.JwtTokenUserInterceptor;
 import com.sky.json.JacksonObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -24,10 +26,11 @@ import java.util.List;
  */
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
-    @Autowired
-    private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    private final JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    private final JwtTokenUserInterceptor jwtTokenUserInterceptor ;
 
     /**
      * 注册自定义拦截器 addInterceptors方法是 WebMvcConfigurationSupport中重写的方法
@@ -40,6 +43,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)     //jwtTokenAdminInterceptor必须是实现了拦截器handleInterceptor接口
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");   //登陆接口不做拦截，没有令牌也可以进行登陆操作，从而通过登陆获取令牌
+
+        registry.addInterceptor(jwtTokenUserInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/user/login")
+                .excludePathPatterns("/user/shop/status");      //查询店铺状态的接口也不做拦截
     }
 
     /**

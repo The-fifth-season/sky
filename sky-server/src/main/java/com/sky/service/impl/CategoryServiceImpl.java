@@ -1,6 +1,7 @@
 package com.sky.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sky.constant.BloomKeysConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
@@ -9,6 +10,7 @@ import com.sky.entity.Category;
 import com.sky.mapper.CategoryMapper;
 import com.sky.result.Result;
 import com.sky.service.ICategoryService;
+import com.sky.BloomFilter.BloomFilterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>  
         category.setUpdateUser(BaseContext.threadLocal.get());
 
         categoryMapper.insert(category);
+        Long id = category.getId();
+        BloomFilterUtils.addToBloom(BloomKeysConstant.Category,id);
         Result.success();
     }
 

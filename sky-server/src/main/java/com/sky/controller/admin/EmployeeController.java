@@ -1,6 +1,6 @@
 package com.sky.controller.admin;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sky.aop.Aspect1;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,7 @@ public class EmployeeController {
     @ApiOperation("登陆")
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
-        String s1 = "你好";
-        Aspect1.setString(s1);
+
         log.info("员工登录：{}", employeeLoginDTO);
         Employee employee = employeeService.login(employeeLoginDTO);
 
