@@ -1,4 +1,5 @@
 package com.sky.service.impl;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.MessageConstant;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
 
     private final EmployeeMapper employeeMapper;
-
     /**
      * 员工登录
      * @param employeeLoginDTO
@@ -104,7 +104,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         String name = employeePageQueryDTO.getName();
         Page<Employee> page = Page.of(employeePageQueryDTO.getPage(),
                 employeePageQueryDTO.getPageSize());
-
         return lambdaQuery().like(name != null, Employee::getName, name)
                 //.orderByDesc(Employee::getCreateTime)             //创建时间倒序排序
                 .page(page);

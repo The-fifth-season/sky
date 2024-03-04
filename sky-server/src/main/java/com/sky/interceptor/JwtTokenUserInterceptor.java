@@ -1,5 +1,7 @@
 package com.sky.interceptor;
 
+import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.properties.JwtProperties;
 import com.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -21,6 +23,8 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
         String header = request.getHeader(jwtProperties.getUserTokenName());
         try {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), header);
+            Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
+            BaseContext.setCurrentId(userId);
             return true;
         } catch (Exception ex) {
             response.setStatus(401);

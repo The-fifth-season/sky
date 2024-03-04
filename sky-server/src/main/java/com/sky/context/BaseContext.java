@@ -1,6 +1,8 @@
 package com.sky.context;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class BaseContext {
 
     //通过线程栈，进行数据的储存，通过静态的变量，方便对数据进行储存和提取，并且每个线程的线程栈都是独立的，

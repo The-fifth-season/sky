@@ -10,9 +10,9 @@ import com.sky.utils.JwtUtil;
 import com.sky.vo.UserLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +26,11 @@ import java.util.HashMap;
 @Api(tags = "用户端登录接口")
 @RequiredArgsConstructor
 public class UserController {
-    private final IUserService userService;
-    @Autowired
-    private JwtProperties jwtProperties ;
+    //声明一个IUserService类型的变量
+private final IUserService userService;
+    //声明一个JwtProperties类型的变量
+    private final JwtProperties jwtProperties ;
+
 
     @PostMapping("/user/login")
     @ApiOperation("微信登录功能")
@@ -42,7 +44,14 @@ public class UserController {
                 .openid(user.getOpenid())
                 .id(user.getId())
                 .build();
+
         return Result.success(userLoginVO);
+    }
+
+    @PostMapping("/user/logout")
+    @Operation(summary = "退出")
+    public Result<String> logout() {
+        return Result.success();
     }
 
 

@@ -1,6 +1,6 @@
 package com.sky.controller.admin;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sky.constant.CacheNameConstant;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -18,6 +18,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -76,6 +78,7 @@ public class EmployeeController {
 
     @PostMapping
     @ApiOperation("增加员工")
+    @CacheEvict(cacheNames = CacheNameConstant.employee,allEntries = true)
     public Result<EmployeeVO> save(@RequestBody EmployeeDTO employeeDTO){
         System.out.println("当前线程3:::"+Thread.currentThread().getId());
         EmployeeVO employeeVO = employeeService.save(employeeDTO);
@@ -83,6 +86,7 @@ public class EmployeeController {
     }
     @GetMapping("/page")
     @ApiOperation("员工分页查询")
+    @Cacheable(cacheNames = CacheNameConstant.employeePage , key = "#employeePageQueryDTO.page")
     public Result<EmployeePageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
         log.info("员工分页查询。参数为：{}",employeePageQueryDTO);
         Page<Employee> page1 = employeeService.pageQuery(employeePageQueryDTO);
@@ -103,6 +107,8 @@ public class EmployeeController {
 
     @PostMapping("/status/{status}")
     @ApiOperation("更改员工状态")
+    @CacheEvict(cacheNames = CacheNameConstant.employee,allEntries = true)
+
     public Result<String> status(@PathVariable String status , String id){
         employeeService.status(status,id);
         return Result.success();
@@ -110,6 +116,7 @@ public class EmployeeController {
 
     @PutMapping
     @ApiOperation("修改员工信息")
+    @CacheEvict(cacheNames = CacheNameConstant.employee,allEntries = true)
     public Result<Employee> modify(@RequestBody EmployeeDTO employeeDTO){
         Employee employee = employeeService.modify(employeeDTO);
         return Result.success(employee);
@@ -122,11 +129,13 @@ public class EmployeeController {
      */
     @GetMapping("/{id}")
     @ApiOperation("根据id查询员工信息")
+    @Cacheable(cacheNames = CacheNameConstant.employeeById , key = "#id" ,unless = "#result.code!=1")
     public Result<Employee> query(@PathVariable Long id){
         Employee byId = employeeService.getById(id);
+        if (byId==null){
+            return Result.error("查询错误");
+        }
         byId.setPassword("*********");
         return Result.success(byId);
     }
-
-
 }
