@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.constant.CacheNameConstant;
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -53,6 +54,7 @@ public class EmployeeController {
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
+        claims.put(JwtClaimsConstant.EMPNAME, employee.getName());
         String token = JwtUtil.createJWT(
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getAdminTtl(),
@@ -102,13 +104,16 @@ public class EmployeeController {
         System.out.println(pages);
         int size = records.size();                      //查询的数据的每页数量
         EmployeePageResult employeePageResult = new EmployeePageResult(total, records);
+
+        System.out.println(BaseContext.getCurrentName());
+        System.out.println(BaseContext.getCurrentId());
         return Result.success(employeePageResult);
+
     }
 
     @PostMapping("/status/{status}")
     @ApiOperation("更改员工状态")
     @CacheEvict(cacheNames = CacheNameConstant.employee,allEntries = true)
-
     public Result<String> status(@PathVariable String status , String id){
         employeeService.status(status,id);
         return Result.success();
@@ -116,7 +121,7 @@ public class EmployeeController {
 
     @PutMapping
     @ApiOperation("修改员工信息")
-    @CacheEvict(cacheNames = CacheNameConstant.employee,allEntries = true)
+    @CacheEvict(cacheNames = CacheNameConstant.employee , allEntries = true)
     public Result<Employee> modify(@RequestBody EmployeeDTO employeeDTO){
         Employee employee = employeeService.modify(employeeDTO);
         return Result.success(employee);

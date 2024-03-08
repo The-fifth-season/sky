@@ -1,5 +1,8 @@
-package com.sky.constant;
+package com.sky.BloomFilter;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BloomKeysConstant {
     public static final String SetMeal = "setMeal";
     public static final String Category = "category";

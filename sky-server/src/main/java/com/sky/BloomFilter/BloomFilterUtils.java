@@ -17,6 +17,7 @@ public class BloomFilterUtils {
     private static BitMapBloomFilter bloomFilter = new BitMapBloomFilter(EXPECTED_INSERTIONS);
 
     public static boolean isNotInBloom(String key , Long id) {
+        log.info("key:{} , id:{}",key,id);
         return !bloomFilter.contains(key+id);
     }
 

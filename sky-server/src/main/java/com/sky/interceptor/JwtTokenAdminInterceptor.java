@@ -59,13 +59,14 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {       //�
             //注意：：这里传入的密钥，要与JwtUtil.creatJWT中传入的一致，否则必定校验失败——————验证失败则直接报异常
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);    //claim 中包含了解析token后的信息
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());     //get(Object Key) get方法中填Map中的Key————获取Value
-
+            String empName = (String) claims.get(JwtClaimsConstant.EMPNAME);
             System.out.println("当前线程2:::"+Thread.currentThread().getId());
 
             /*ThreadLocal<Long> threadLocal = BaseContext.threadLocal;
             threadLocal.set(empId);*/
 
             BaseContext.setCurrentId(empId);
+            BaseContext.setCurrentName(empName);
 
             log.info("当前员工id：{}", empId);
             //3、通过，放行

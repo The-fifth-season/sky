@@ -44,10 +44,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");   //登陆接口不做拦截，没有令牌也可以进行登陆操作，从而通过登陆获取令牌
 
-        registry.addInterceptor(jwtTokenUserInterceptor)
+/*        registry.addInterceptor(jwtTokenUserInterceptor)
                 .addPathPatterns("/user/**")
                 .excludePathPatterns("/user/user/login")
-                .excludePathPatterns("/user/shop/status");      //查询店铺状态的接口也不做拦截
+                .excludePathPatterns("/user/shop/status");      //查询店铺状态的接口也不做拦截*/
     }
 
     /**

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+</head>
+<body>
+
+<input type="text" id="messageInput" placeholder="Type a message">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    // WebSocket连接地址
+    const socket = new WebSocket("ws://localhost:8080/chat");
+
+    // 监听连接建立事件
+    socket.onopen = function(event) {
+        console.log("WebSocket connection opened:", event);
+    };
+
+    // 监听接收到消息事件
+    socket.onmessage = function(event) {
+        const message = event.data;
+        console.log("Received message:", message);
+        // 在这里处理接收到的消息，例如将消息显示在页面上
+        // ...
+    };
+
+    // 监听连接关闭事件
+    socket.onclose = function(event) {
+        console.log("WebSocket connection closed:", event);
+    };
+
+    // 发送消息的函数
+    function sendMessage() {
+        const messageInput = document.getElementById("messageInput");
+        const message = messageInput.value;
+
+        // 构造要发送的消息对象，这里假设消息格式为 JSON
+        const messageObject = {
+            id: 1, // 替换为你的用户ID
+            name: "管理员", // 替换为你的用户名
+            message: message
+        };
+
+        // 将消息对象转为 JSON 字符串
+        const jsonString = JSON.stringify(messageObject);
+
+        // 发送消息到服务器
+        socket.send(jsonString);
+
+        // 清空输入框
+        messageInput.value = "";
+    }
+</script>
+
+</body>
+</html>
